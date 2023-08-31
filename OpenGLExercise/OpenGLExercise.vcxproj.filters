@@ -90,6 +90,9 @@
     <ClCompile Include="src\tests\TestRectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestTrippy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1031,6 +1034,9 @@
     <ClInclude Include="src\tests\TestRectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\tests\TestTrippy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basicVertex.glsl" />
@@ -1456,5 +1462,7 @@
     <None Include="res\shaders\model3DFragment.glsl" />
     <None Include="res\shaders\normalMappingFragment.glsl" />
     <None Include="res\shaders\normalMappingVertex.glsl" />
+    <None Include="res\shaders\trippyVertex.glsl" />
+    <None Include="res\shaders\trippyFragment.glsl" />
   </ItemGroup>
 </Project>

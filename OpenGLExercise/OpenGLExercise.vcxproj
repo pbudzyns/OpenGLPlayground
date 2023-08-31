@@ -146,6 +146,7 @@
     <ClCompile Include="src\tests\Test3DModel.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestRectangle.cpp" />
+    <ClCompile Include="src\tests\TestTrippy.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\tests\Test3DModel.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestRectangle.h" />
+    <ClInclude Include="src\tests\TestTrippy.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />
@@ -481,6 +483,8 @@
     <None Include="res\shaders\model3DVertex.glsl" />
     <None Include="res\shaders\normalMappingFragment.glsl" />
     <None Include="res\shaders\normalMappingVertex.glsl" />
+    <None Include="res\shaders\trippyFragment.glsl" />
+    <None Include="res\shaders\trippyVertex.glsl" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
