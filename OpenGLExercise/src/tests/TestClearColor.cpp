@@ -5,8 +5,8 @@
 #include "Renderer.h"
 
 namespace test {
-	TestClearColor::TestClearColor()
-		: m_Color{0.2f, 0.3f, 0.8f, 1.0f}
+	TestClearColor::TestClearColor(GLFWwindow* window)
+		: m_Color{0.2f, 0.3f, 0.8f, 1.0f}, Test (window)
 	{
 	}
 

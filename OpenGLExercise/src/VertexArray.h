@@ -3,6 +3,8 @@
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
 
+#include <vector>
+
 class VertexArray
 {
 public:
@@ -13,7 +15,10 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+
 private:
 	unsigned int m_RendererId;
+	std::vector<const VertexBuffer*> vbs;
+	std::vector<const VertexBufferLayout*> vls;
 };
 

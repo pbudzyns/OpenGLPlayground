@@ -2,6 +2,8 @@
 
 #include "VertexArray.h"
 
+#include <iostream>
+
 VertexArray::VertexArray()
 {
 	glGenVertexArrays(1, &m_RendererId);
@@ -15,22 +17,27 @@ VertexArray::~VertexArray()
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
 	Bind();
-	vb.Bind();
+	static int i{ 0 };
 	const auto& elements{ layout.GetElements() };
 	unsigned int offset{ 0 };
-	for (int i{0}; i<elements.size(); ++i)
+	vb.Bind();
+
+	for (const auto& element: elements)
 	{
-		const auto& element{ elements[i] };
+		std::cout << "Registering attribute " << i << std::endl;
 		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, element.count, element.type, 
-			element.normalized, layout.GetStride(), (const void*)offset);
+		glVertexAttribPointer(i, element.count, element.type,
+			element.normalized, 0, (const void*)0);
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
+		i++;
 	}
 }
 
 void VertexArray::Bind() const
 {
 	glBindVertexArray(m_RendererId);
+
+
 }
 
 void VertexArray::Unbind() const

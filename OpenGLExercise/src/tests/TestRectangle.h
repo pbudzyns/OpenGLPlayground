@@ -9,12 +9,12 @@
 namespace test {
 	class TestRectangle : public Test {
 	public:
-		TestRectangle();
+		TestRectangle(GLFWwindow* window);
 		~TestRectangle();
 
-		virtual void OnUpdate(float deltaTime) override;
-		virtual void OnRender() override;
-		virtual void OnImGuiRender() override;
+		void OnUpdate(float deltaTime) override;
+		void OnRender() override;
+		void OnImGuiRender() override;
 
 	private:
 		Shader* m_Shader{nullptr};
@@ -24,7 +24,7 @@ namespace test {
 		VertexBufferLayout* layout{ nullptr };
 
 		float* m_Positions;
-		unsigned int* m_Indices;
+		unsigned short* m_Indices;
 		float m_Color[4];
 	};
 }

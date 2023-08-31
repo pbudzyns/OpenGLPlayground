@@ -1,5 +1,8 @@
 #pragma once
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include <vector>
 #include <string>
 #include <utility>
@@ -7,8 +10,11 @@
 
 namespace test {
 	class Test {
-	public:
+	private:
 		Test() = default;
+		GLFWwindow* m_Window;
+	public:
+		Test(GLFWwindow* window) : m_Window{ window } {};
 		virtual ~Test() = default;
 
 		virtual void OnUpdate(float deltaTime) {}
@@ -24,8 +30,8 @@ namespace test {
 		void OnImGuiRender() override;
 
 		template<typename T>
-		void RegisterTest(const std::string& name) {
-			m_Tests.push_back(std::make_pair(name, []() {return new T(); }));
+		void RegisterTest(const std::string& name, GLFWwindow* window = nullptr) {
+			m_Tests.push_back(std::make_pair(name, [window]() {return new T(window); }));
 		}
 
 	private:

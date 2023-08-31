@@ -1,15 +1,13 @@
 #include "tests/TestRectangle.h"
 
-#include <imgui/imgui.h>
-
 #include "Renderer.h"
+
+#include <imgui/imgui.h>
 
 namespace test {
 
-
-
-	TestRectangle::TestRectangle()
-		: m_Color{0.2f, 0.4f, 0.8f, 1.0f}
+	TestRectangle::TestRectangle(GLFWwindow* window)
+		: m_Color{0.2f, 0.4f, 0.8f, 1.0f}, Test(window)
 	{
 		m_Positions = new float[8]{
 			-0.5f, -0.5f,
@@ -18,7 +16,7 @@ namespace test {
 			-0.5f,  0.5f
 		};
 
-		m_Indices = new unsigned int[6]{
+		m_Indices = new unsigned short[6]{
 			0, 1, 2,
 			2, 3, 0
 		};
@@ -35,7 +33,7 @@ namespace test {
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		m_Shader = new Shader("res/shaders/Basic.shader");
+		m_Shader = new Shader("res/shaders/basicVertex.glsl", "res/shaders/basicFragment.glsl");
 	}
 
 	TestRectangle::~TestRectangle()

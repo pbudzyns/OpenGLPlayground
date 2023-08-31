@@ -10,6 +10,9 @@ public:
 	void Bind() const;
 	void Unbind() const;
 
+	unsigned int getId() { return m_RrendererId; }
+
+
 private:
 	unsigned int m_RrendererId;
 };

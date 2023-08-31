@@ -8,15 +8,16 @@
 struct VertexBufferElement
 {
 	GLenum type;
-	GLint count;
+	GLuint count;
 	GLboolean normalized;
 
 	static unsigned int GetSizeOfType(unsigned int type)
 	{
 		switch (type)
 		{
-		case GL_FLOAT: return 4;
-		case GL_UNSIGNED_INT: return 4;
+		case GL_FLOAT: return sizeof(GLfloat);
+		case GL_UNSIGNED_INT: return sizeof(GLuint);
+		case GL_UNSIGNED_SHORT: return sizeof(GLushort);
 		default:
 			return 0;
 		}
@@ -38,14 +39,14 @@ public:
 	template<>
 	void Push<float>(unsigned int count)
 	{
-		m_Elements.push_back({ GL_FLOAT, static_cast<GLint>(count), static_cast<GLint>(false) });
+		m_Elements.push_back({ GL_FLOAT, static_cast<GLuint>(count), static_cast<GLint>(false) });
 		m_Stride += count * sizeof(GLfloat);
 	}
 
 	template<>
 	void Push<unsigned int>(unsigned int count)
 	{
-		m_Elements.push_back({ GL_UNSIGNED_INT, static_cast<GLint>(count), static_cast<GLint>(false) });
+		m_Elements.push_back({ GL_UNSIGNED_INT, static_cast<GLuint>(count), static_cast<GLint>(false) });
 		m_Stride += count * sizeof(GLuint);
 	}
 

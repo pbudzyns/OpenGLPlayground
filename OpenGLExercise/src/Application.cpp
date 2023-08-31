@@ -10,6 +10,7 @@
 #include "tests/Test.h"
 #include "tests/TestClearColor.h"
 #include "tests/TestRectangle.h"
+#include "tests/Test3DModel.h"
 
 
 int main(void)
@@ -45,6 +46,15 @@ int main(void)
     ImGuiIO& io = ImGui::GetIO();
     io.FontGlobalScale = 2.0f;
 
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glfwPollEvents();
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDepthFunc(GL_LESS);
+
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
@@ -56,15 +66,16 @@ int main(void)
         
         test::Test* currentTest{ nullptr };
         test::TestMenu* testMenu = new test::TestMenu(currentTest);
-        currentTest = testMenu;
+        currentTest = new test::Test3DModel(window);
         testMenu->RegisterTest<test::TestClearColor>("Clear Color");
         testMenu->RegisterTest<test::TestRectangle>("Rectangle");
+        testMenu->RegisterTest<test::Test3DModel>("3D model", window);
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
             glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
@@ -85,8 +96,8 @@ int main(void)
 
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            glfwSwapBuffers(window);
 
+            glfwSwapBuffers(window);
             glfwPollEvents();
         }
         delete currentTest;

@@ -69,7 +69,7 @@ int main()
 		"res/shaders/normalMappingFragment.glsl"
 	) };
 
-	OBJModel model{ loadOBJ("res/models/cylinder.obj", true) };
+	OBJModel model{ loadOBJ("res/models/suzanne.obj", false) };
 	OBJModelIndexed modelIndexed{ indexModelVBO(model) };
 	
 	//GLuint texture{ loadDDS("res/textures/uvmap.DDS")};
@@ -101,7 +101,7 @@ int main()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, modelIndexed.indices.size() * sizeof(unsigned short), &modelIndexed.indices[0], GL_STATIC_DRAW);
 
-	GLuint tangentbuffer;
+	/*GLuint tangentbuffer;
 	glGenBuffers(1, &tangentbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
 	glBufferData(GL_ARRAY_BUFFER, modelIndexed.tangents.size() * sizeof(glm::vec3), &modelIndexed.tangents[0], GL_STATIC_DRAW);
@@ -109,7 +109,7 @@ int main()
 	GLuint bitangentbuffer;
 	glGenBuffers(1, &bitangentbuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
-	glBufferData(GL_ARRAY_BUFFER, modelIndexed.bitangents.size() * sizeof(glm::vec3), &modelIndexed.bitangents[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, modelIndexed.bitangents.size() * sizeof(glm::vec3), &modelIndexed.bitangents[0], GL_STATIC_DRAW);*/
 
 
 	glm::mat4 Projection = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 100.0f);
@@ -237,28 +237,28 @@ int main()
 		);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
 		// 4th attribute buffer : tangents
-		glEnableVertexAttribArray(3);
-		glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
-		glVertexAttribPointer(
-			3,                                // attribute
-			3,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
-		);
+		//glEnableVertexAttribArray(3);
+		//glBindBuffer(GL_ARRAY_BUFFER, tangentbuffer);
+		//glVertexAttribPointer(
+		//	3,                                // attribute
+		//	3,                                // size
+		//	GL_FLOAT,                         // type
+		//	GL_FALSE,                         // normalized?
+		//	0,                                // stride
+		//	(void*)0                          // array buffer offset
+		//);
 
-		// 5th attribute buffer : bitangents
-		glEnableVertexAttribArray(4);
-		glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
-		glVertexAttribPointer(
-			4,                                // attribute
-			3,                                // size
-			GL_FLOAT,                         // type
-			GL_FALSE,                         // normalized?
-			0,                                // stride
-			(void*)0                          // array buffer offset
-		);
+		//// 5th attribute buffer : bitangents
+		//glEnableVertexAttribArray(4);
+		//glBindBuffer(GL_ARRAY_BUFFER, bitangentbuffer);
+		//glVertexAttribPointer(
+		//	4,                                // attribute
+		//	3,                                // size
+		//	GL_FLOAT,                         // type
+		//	GL_FALSE,                         // normalized?
+		//	0,                                // stride
+		//	(void*)0                          // array buffer offset
+		//);
 
 		// Draw the triangles !
 		glDrawElements(
