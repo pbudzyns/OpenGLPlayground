@@ -2,37 +2,22 @@
 
 #include "Renderer.h"
 
+#include <imgui/imgui.h>
+#include <glm/gtx/transform.hpp>
+
 #include "commons/vboindexer.hpp"
 #include "commons/TextureLoad.h"
 
 namespace test {
-	Test3DModel::Test3DModel(GLFWwindow* window) : Test(window), m_Controls{new Controls(window)}
+	Test3DModel::Test3DModel(GLFWwindow* window) 
+		: Test(window)
+		, m_Controls{new Controls(window)}
+		, m_LightPower(70.0f)
+		, m_LightPosition{ 4.0f, 4.0f, 4.0f }
+		, m_LightColor{ 1.0f, 1.0f, 1.0f}
 	{
 		OBJModel model{ loadOBJ("res/models/suzanne.obj") };
 		modelIndexed = indexModelVBO(model);
-
-		//GLuint VertexArrayID;
-		//glGenVertexArrays(1, &VertexArrayID);
-		//glBindVertexArray(VertexArrayID);
-
-		/*
-
-		glGenBuffers(1, &vertexbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		glBufferData(GL_ARRAY_BUFFER, modelIndexed.vertices.size() * sizeof(glm::vec3), &modelIndexed.vertices[0], GL_STATIC_DRAW);
-
-		glGenBuffers(1, &uvbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-		glBufferData(GL_ARRAY_BUFFER, modelIndexed.uvs.size() * sizeof(glm::vec2), &modelIndexed.uvs[0], GL_STATIC_DRAW);
-
-		glGenBuffers(1, &normalbuffer);
-		glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-		glBufferData(GL_ARRAY_BUFFER, modelIndexed.normals.size() * sizeof(glm::vec3), &modelIndexed.normals[0], GL_STATIC_DRAW);*/
-
-		/*glGenBuffers(1, &elementbuffer);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, modelIndexed.indices.size() * sizeof(unsigned short), &modelIndexed.indices[0], GL_STATIC_DRAW);
-		*/
 
 		vb = new VertexBuffer(&modelIndexed.vertices[0], modelIndexed.vertices.size() * sizeof(glm::vec3));
 		//vertexbuffer = vb->getId();
@@ -55,50 +40,18 @@ namespace test {
 		va->AddBuffer(*norb, *layout_nor);
 		
 		ib = new IndexBuffer(&modelIndexed.indices[0], (unsigned int)modelIndexed.indices.size());
-		/*
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);*/
 
 		m_Shader = new Shader("res/shaders/model3DVertex.glsl", "res/shaders/model3DFragment.glsl");
-
-		//glEnableVertexAttribArray(0);
-		//glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-		//glVertexAttribPointer(
-		//	0,                  // attribute
-		//	3,                  // size
-		//	GL_FLOAT,           // type
-		//	GL_FALSE,           // normalized?
-		//	0,                  // stride
-		//	(void*)0            // array buffer offset
-		//);
-
-		////// 2nd attribute buffer : UVs
-		//glEnableVertexAttribArray(1);
-		//glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
-		//glVertexAttribPointer(
-		//	1,                                // attribute
-		//	2,                                // size
-		//	GL_FLOAT,                         // type
-		//	GL_FALSE,                         // normalized?
-		//	0,                                // stride
-		//	(void*)0                          // array buffer offset
-		//);
-		////// 3rd attribute buffer : normals
-		//glEnableVertexAttribArray(2);
-		//glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
-		//glVertexAttribPointer(
-		//	2,                                // attribute
-		//	3,                                // size
-		//	GL_FLOAT,                         // type
-		//	GL_FALSE,                         // normalized?
-		//	0,                                // stride
-		//	(void*)0                          // array buffer offset
-		//);
 
 		texture = loadDDS("res/textures/uvmap.DDS");
 	}
 	Test3DModel::~Test3DModel()
 	{
+		m_Shader->Unbind();
+		ib->Unbind();
+		va->Unbind();
+		vb->Unbind(); uvb->Unbind(); norb->Unbind();
+
 		delete vb;
 		delete uvb;
 		delete norb;
@@ -106,8 +59,11 @@ namespace test {
 		delete layout_vb;
 		delete layout_uv;
 		delete layout_nor;
-
+		delete va;
 		delete ib;
+		delete m_Shader;
+		glDeleteTextures(1, &texture);
+
 	}
 	void Test3DModel::OnUpdate(float deltaTime)
 	{
@@ -117,7 +73,13 @@ namespace test {
 		Renderer::Clear();
 
 		glm::mat4 Model = m_Controls->getModelMatrix();
-		glm::mat4 View = m_Controls->getViewMatrix();
+		Model = glm::rotate(Model, (float)glfwGetTime(), glm::vec3(1, 1, 1));
+		//glm::mat4 View = m_Controls->getViewMatrix();
+		glm::mat4 View = glm::lookAt(
+			glm::vec3(0, 0, 3), // Camera is at (4,3,-3), in World Space
+			glm::vec3(0, 0, 0), // and looks at the origin
+			glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
+		);
 		glm::mat4 Projection = m_Controls->getProjectionMatrix();
 		glm::mat3 ModelView3x3Matrix = glm::mat3(View * Model);
 		glm::mat4 MVP = Projection * View * Model;
@@ -125,11 +87,10 @@ namespace test {
 		m_Shader->SetUniformMat4("MVP", MVP);
 		m_Shader->SetUniformMat4("V", View);
 		m_Shader->SetUniformMat4("M", Model);
-		//m_Shader->SetUniformMat3("MV3x3", ModelView3x3Matrix);
 
-		m_Shader->SetUniform1f("lightPower", 50.0f);
-		m_Shader->SetUniform3f("lightPosition_worldspace", 4.0f, 4.0f, 4.0f);
-		m_Shader->SetUniform3f("lightColor", 0.8f, 0.6f, 0.2f);
+		m_Shader->SetUniform1f("lightPower", m_LightPower);
+		m_Shader->SetUniform3f("lightPosition_worldspace", m_LightPosition[0], m_LightPosition[1], m_LightPosition[2]);
+		m_Shader->SetUniform3f("lightColor", m_LightColor[0], m_LightColor[1], m_LightColor[2]);
 
 		GLuint tectureSampler = m_Shader->GetUniformLocation("myTextureSampler");
 
@@ -137,26 +98,15 @@ namespace test {
 		glBindTexture(GL_TEXTURE_2D, texture);
 		// Set our "DiffuseTextureSampler" sampler to use Texture Unit 0
 		glUniform1i(tectureSampler, 0);
-		/*vb->Bind();
-		uvb->Bind();
-		norb->Bind();
-		Renderer::Draw(*va, *ib, *m_Shader);*/
-
-		// 1rst attribute buffer : vertices
 		
-		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer);
-		//ib->Bind();
-		//glBindVertexArray(VertexArrayID);
 		Renderer::Draw(*va, *ib, *m_Shader);
-		// Draw the triangles !
-		//glDrawElements(
-		//	GL_TRIANGLES,      // mode
-		//	modelIndexed.indices.size(),    // count
-		//	GL_UNSIGNED_SHORT,   // type
-		//	(void*)0           // element array buffer offset
-		//);
+	
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	void Test3DModel::OnImGuiRender()
 	{
+		ImGui::SliderFloat("Light Power", &m_LightPower, 0.0f, 500.0f);
+		ImGui::SliderFloat3("Light Position", m_LightPosition, -4.0f, 4.0f);
+		ImGui::ColorEdit3("Light Color", m_LightColor);
 	}
 }

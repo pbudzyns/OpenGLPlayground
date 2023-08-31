@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-VertexArray::VertexArray()
+VertexArray::VertexArray() : m_Counter{0}
 {
 	glGenVertexArrays(1, &m_RendererId);
 }
@@ -17,27 +17,30 @@ VertexArray::~VertexArray()
 void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout)
 {
 	Bind();
-	static int i{ 0 };
 	const auto& elements{ layout.GetElements() };
 	unsigned int offset{ 0 };
 	vb.Bind();
 
 	for (const auto& element: elements)
 	{
-		std::cout << "Registering attribute " << i << std::endl;
-		glEnableVertexAttribArray(i);
-		glVertexAttribPointer(i, element.count, element.type,
-			element.normalized, 0, (const void*)0);
+		std::cout << "Registering attribute " << m_Counter << std::endl;
+		glEnableVertexAttribArray(m_Counter);
+		glVertexAttribPointer(
+			m_Counter,
+			element.count,
+			element.type,
+			element.normalized,
+			layout.GetStride(),
+			(const void*)0
+		);
 		offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
-		i++;
+		++m_Counter;
 	}
 }
 
 void VertexArray::Bind() const
 {
 	glBindVertexArray(m_RendererId);
-
-
 }
 
 void VertexArray::Unbind() const

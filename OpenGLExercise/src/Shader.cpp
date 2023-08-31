@@ -17,6 +17,7 @@ Shader::Shader(const std::string& vertexShaderPath, const std::string& fragmentS
 
 Shader::~Shader()
 {
+    glDeleteProgram(m_RendererId);
 }
 
 void Shader::Bind() const

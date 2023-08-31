@@ -27,7 +27,7 @@ int main(void)
 
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1280, 960, "Hello World", NULL, NULL);
+    window = glfwCreateWindow(2540, 1200, "Hello World", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -46,7 +46,7 @@ int main(void)
     ImGuiIO& io = ImGui::GetIO();
     io.FontGlobalScale = 2.0f;
 
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    //glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     //glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwPollEvents();
@@ -86,7 +86,8 @@ int main(void)
                 currentTest->OnUpdate(0.0f);
                 currentTest->OnRender();
                 ImGui::Begin("Test");
-                if (currentTest != testMenu && ImGui::Button("<-")) {
+                if (currentTest != testMenu && (ImGui::Button("<-")
+                    || (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS))) {
                     delete currentTest;
                     currentTest = testMenu;
                 }

@@ -43,12 +43,8 @@ Controls::Controls(GLFWwindow* window) : m_Window{window}
 {
     //glfwSetScrollCallback(window, scroll_callback);
     glfwGetWindowSize(window, &m_W, &m_H);
-    glfwSetCursorPosCallback(window, coursor_position_callback);
+    //glfwSetCursorPosCallback(window, coursor_position_callback);
     glfwSetKeyCallback(window, key_callback);
-}
-
-Controls::~Controls()
-{
 }
 
 glm::mat4 Controls::getProjectionMatrix()

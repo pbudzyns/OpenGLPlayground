@@ -7,7 +7,7 @@ class Controls
 {
 public:
 	Controls(GLFWwindow* window);
-	~Controls();
+	~Controls() = default;
 	glm::mat4 getProjectionMatrix();
 	glm::mat4 getViewMatrix();
 	glm::mat4 getModelMatrix();

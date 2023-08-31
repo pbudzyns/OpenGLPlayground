@@ -25,6 +25,10 @@ namespace test {
 		GLuint VertexArrayID, vertexbuffer, uvbuffer, normalbuffer, elementbuffer;
 		GLuint texture;
 
+		float m_LightPower;
+		float m_LightPosition[3];
+		float m_LightColor[3];
+
 		Shader* m_Shader{ nullptr };
 		VertexArray* va{ nullptr };
 		IndexBuffer* ib{ nullptr };

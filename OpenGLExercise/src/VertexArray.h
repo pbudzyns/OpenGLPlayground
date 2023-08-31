@@ -17,6 +17,7 @@ public:
 
 
 private:
+	size_t m_Counter;
 	unsigned int m_RendererId;
 	std::vector<const VertexBuffer*> vbs;
 	std::vector<const VertexBufferLayout*> vls;
