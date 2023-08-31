@@ -54,6 +54,7 @@ namespace test {
 	}
 	void TestRectangle::OnRender()
 	{
+		Renderer::Clear();
 		m_Shader->Bind();
 		m_Shader->SetUniform4f("u_Color", m_Color[0], m_Color[1], m_Color[2], m_Color[3]);
 		Renderer::Draw(*va, *ib, *m_Shader);
