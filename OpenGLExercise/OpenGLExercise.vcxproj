@@ -144,6 +144,7 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\tests\Test.cpp" />
     <ClCompile Include="src\tests\Test3DModel.cpp" />
+    <ClCompile Include="src\tests\TestArtShader.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestRectangle.cpp" />
     <ClCompile Include="src\tests\TestTrippy.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\Test3DModel.h" />
+    <ClInclude Include="src\tests\TestArtShader.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestRectangle.h" />
     <ClInclude Include="src\tests\TestTrippy.h" />
@@ -477,6 +479,8 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\shaders\artFragment.glsl" />
+    <None Include="res\shaders\artVertex.glsl" />
     <None Include="res\shaders\basicFragment.glsl" />
     <None Include="res\shaders\basicVertex.glsl" />
     <None Include="res\shaders\model3DFragment.glsl" />

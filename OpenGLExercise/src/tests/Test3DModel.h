@@ -25,6 +25,8 @@ namespace test {
 		GLuint VertexArrayID, vertexbuffer, uvbuffer, normalbuffer, elementbuffer;
 		GLuint texture;
 
+		float m_RotateSpeed{ 1.0f };
+		float m_MaterialGlow{ 50.0f };
 		float m_LightPower;
 		float m_LightPosition[3];
 		float m_LightColor[3];

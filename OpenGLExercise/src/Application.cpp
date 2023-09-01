@@ -12,6 +12,7 @@
 #include "tests/TestRectangle.h"
 #include "tests/Test3DModel.h"
 #include "tests/TestTrippy.h"
+#include "tests/TestArtShader.h"
 
 
 int main(void)
@@ -67,11 +68,12 @@ int main(void)
         
         test::Test* currentTest{ nullptr };
         test::TestMenu* testMenu = new test::TestMenu(currentTest);
-        currentTest = new test::TestTrippy(window);
+        currentTest = testMenu;
         testMenu->RegisterTest<test::TestClearColor>("Clear Color");
         testMenu->RegisterTest<test::TestRectangle>("Rectangle");
         testMenu->RegisterTest<test::Test3DModel>("3D model", window);
-        testMenu->RegisterTest<test::TestTrippy>("Art Shader");
+        testMenu->RegisterTest<test::TestTrippy>("Trippy Shader");
+        testMenu->RegisterTest<test::TestArtShader>("Art Shader", window);
 
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))

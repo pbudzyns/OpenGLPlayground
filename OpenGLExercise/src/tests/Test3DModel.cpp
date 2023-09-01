@@ -73,10 +73,10 @@ namespace test {
 		Renderer::Clear();
 
 		glm::mat4 Model = m_Controls->getModelMatrix();
-		Model = glm::rotate(Model, (float)glfwGetTime(), glm::vec3(1, 1, 1));
+		Model = glm::rotate(Model, (float)glfwGetTime() * m_RotateSpeed, glm::vec3(1, 1, 1));
 		//glm::mat4 View = m_Controls->getViewMatrix();
 		glm::mat4 View = glm::lookAt(
-			glm::vec3(0, 0, 3), // Camera is at (4,3,-3), in World Space
+			glm::vec3(0, 0, 4), // Camera is at (4,3,-3), in World Space
 			glm::vec3(0, 0, 0), // and looks at the origin
 			glm::vec3(0, 1, 0)  // Head is up (set to 0,-1,0 to look upside-down)
 		);
@@ -88,6 +88,7 @@ namespace test {
 		m_Shader->SetUniformMat4("V", View);
 		m_Shader->SetUniformMat4("M", Model);
 
+		m_Shader->SetUniform1f("materialGlow", m_MaterialGlow);
 		m_Shader->SetUniform1f("lightPower", m_LightPower);
 		m_Shader->SetUniform3f("lightPosition_worldspace", m_LightPosition[0], m_LightPosition[1], m_LightPosition[2]);
 		m_Shader->SetUniform3f("lightColor", m_LightColor[0], m_LightColor[1], m_LightColor[2]);
@@ -105,6 +106,8 @@ namespace test {
 	}
 	void Test3DModel::OnImGuiRender()
 	{
+		ImGui::SliderFloat("Rotate Speed", &m_RotateSpeed, 0.0f, 5.0f);
+		ImGui::SliderFloat("Material Glow", &m_MaterialGlow, 0.0f, 200.0f);
 		ImGui::SliderFloat("Light Power", &m_LightPower, 0.0f, 500.0f);
 		ImGui::SliderFloat3("Light Position", m_LightPosition, -4.0f, 4.0f);
 		ImGui::ColorEdit3("Light Color", m_LightColor);

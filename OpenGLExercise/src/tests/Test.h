@@ -12,6 +12,7 @@ namespace test {
 	class Test {
 	private:
 		Test() = default;
+	protected:
 		GLFWwindow* m_Window;
 	public:
 		Test(GLFWwindow* window) : m_Window{ window } {};

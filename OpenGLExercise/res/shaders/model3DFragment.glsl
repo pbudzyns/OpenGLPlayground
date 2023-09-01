@@ -12,6 +12,7 @@ uniform sampler2D myTextureSampler;
 uniform vec3 lightPosition_worldspace;
 uniform vec3 lightColor;
 uniform float lightPower;
+uniform float materialGlow;
 
 void main()
 {
@@ -33,6 +34,6 @@ void main()
 
 	color = materialAmbientColor
     + materialDiffuseColor * lightColor * lightPower * cosTheta / (distance * distance)
-	+ materialDiffuseColor * lightColor * lightPower * pow(cosAlpha, 100) / (distance * distance);
+	+ materialDiffuseColor * lightColor * lightPower * pow(cosAlpha, materialGlow) / (distance * distance);
 
 }
